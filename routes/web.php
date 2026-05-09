@@ -5,9 +5,12 @@ declare(strict_types=1);
 use App\Enums\UserRole;
 use App\Http\Controllers\Admin;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Http\Controllers\Auth\EmailVerificationNotificationController;
+use App\Http\Controllers\Auth\EmailVerificationPromptController;
 use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\RegisteredUserController;
+use App\Http\Controllers\Auth\VerifyEmailController;
 use App\Http\Controllers\Candidate;
 use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\HomeController;
@@ -43,6 +46,28 @@ Route::middleware('guest')->group(function () {
 
 Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
     ->middleware('auth')->name('logout');
+
+/*
+|--------------------------------------------------------------------------
+| Vérification d'email
+|--------------------------------------------------------------------------
+| Trio de routes attendues par les notifications d'Illuminate :
+|   - verification.notice : page invitant l'utilisateur à vérifier son email
+|   - verification.verify : endpoint signé qui valide l'email
+|   - verification.send   : ré-envoi du lien
+*/
+Route::middleware('auth')->group(function () {
+    Route::get('/email/verify', EmailVerificationPromptController::class)
+        ->name('verification.notice');
+
+    Route::get('/email/verify/{id}/{hash}', VerifyEmailController::class)
+        ->middleware(['signed', 'throttle:6,1'])
+        ->name('verification.verify');
+
+    Route::post('/email/verification-notification', [EmailVerificationNotificationController::class, 'store'])
+        ->middleware('throttle:6,1')
+        ->name('verification.send');
+});
 
 /*
 |--------------------------------------------------------------------------
