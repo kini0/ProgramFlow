@@ -163,6 +163,10 @@ Route::middleware(['auth', 'role:'.UserRole::Admin->value.'|'.UserRole::Organize
         Route::get('/', Organizer\DashboardController::class)->name('dashboard');
 
         Route::prefix('programs/{program:slug}')->name('programs.')->group(function () {
+            // Action explicite : clôture des candidatures + lancement évaluation
+            Route::post('start-evaluation', [Organizer\ApplicationController::class, 'startEvaluation'])
+                ->name('startEvaluation');
+
             Route::get('applications',                      [Organizer\ApplicationController::class, 'index'])->name('applications.index');
             Route::get('applications/{application:reference}', [Organizer\ApplicationController::class, 'show'])->name('applications.show');
             Route::post('applications/{application:reference}/jury',     [Organizer\ApplicationController::class, 'assignJury'])->name('applications.assignJury');
@@ -192,8 +196,10 @@ Route::middleware(['auth', 'role:'.UserRole::Admin->value.'|'.UserRole::Organize
 Route::middleware(['auth', 'role:'.UserRole::Admin->value.'|'.UserRole::Jury->value])
     ->prefix('jury')->name('jury.')->group(function () {
         Route::get('/', Jury\DashboardController::class)->name('dashboard');
-        Route::get('evaluations/{evaluation}',    [Jury\EvaluationController::class, 'show'])->name('evaluations.show');
-        Route::patch('evaluations/{evaluation}',  [Jury\EvaluationController::class, 'update'])->name('evaluations.update');
+        Route::get('programs',                   [Jury\ProgramController::class, 'index'])->name('programs.index');
+        Route::get('programs/{program:slug}',    [Jury\ProgramController::class, 'show'])->name('programs.show');
+        Route::get('evaluations/{evaluation}',   [Jury\EvaluationController::class, 'show'])->name('evaluations.show');
+        Route::patch('evaluations/{evaluation}', [Jury\EvaluationController::class, 'update'])->name('evaluations.update');
     });
 
 /*

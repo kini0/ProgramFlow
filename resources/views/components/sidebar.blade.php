@@ -17,7 +17,8 @@
         ]);
     } elseif ($user?->hasRole(UserRole::Jury->value)) {
         $items = collect([
-            ['route' => 'jury.dashboard', 'label' => 'À évaluer', 'icon' => 'check'],
+            ['route' => 'jury.dashboard',         'label' => 'À évaluer',     'icon' => 'check'],
+            ['route' => 'jury.programs.index',    'label' => 'Mes programmes', 'icon' => 'briefcase'],
         ]);
     } elseif ($user?->hasRole(UserRole::Candidate->value)) {
         $items = collect([
