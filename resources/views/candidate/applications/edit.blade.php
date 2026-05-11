@@ -1,13 +1,15 @@
 @extends('layouts.app')
 @section('title', 'Candidature — '.$application->program->title)
 @section('content')
-    <a href="{{ route('candidate.dashboard') }}" class="text-sm text-slate-500 hover:underline">← Mon espace</a>
+    <a href="{{ route('candidate.dashboard') }}" class="text-sm text-slate-500 hover:underline inline-flex items-center gap-1">
+        <x-icon name="arrow-left" /> Mon espace
+    </a>
     <h1 class="text-2xl font-bold mt-2">{{ $application->program->title }}</h1>
     <p class="text-slate-500 mb-6">Référence {{ $application->reference }} · <x-status-badge :label="$application->status->label()" :color="$application->status->color()" /></p>
 
     @if(! $application->isDraft())
         <x-alert type="info">
-            ✏️ Votre candidature est <b>déjà soumise</b>, mais vous pouvez encore la mettre à jour
+            <span class="inline-flex items-center gap-2"><x-icon name="pencil-simple" /> Votre candidature est <b>déjà soumise</b>, mais vous pouvez encore la mettre à jour</span>
             jusqu'à la clôture le <b>{{ $application->program->application_closes_at?->format('d/m/Y') ?? '—' }}</b>.
             Vos modifications seront enregistrées sans nouvelle soumission.
         </x-alert>
@@ -79,7 +81,7 @@
                     @endif
                 @endforeach
                 <div class="flex justify-end">
-                    <button type="button" x-on:click="step = 2; window.scrollTo({top:0, behavior:'smooth'})" class="btn-primary">Étape suivante →</button>
+                    <button type="button" x-on:click="step = 2; window.scrollTo({top:0, behavior:'smooth'})" class="btn-primary">Étape suivante <x-icon name="arrow-right" /></button>
                 </div>
             </div>
 
@@ -97,8 +99,8 @@
                     @endif
                 @endforeach
                 <div class="flex justify-between">
-                    <button type="button" x-on:click="step = 1; window.scrollTo({top:0, behavior:'smooth'})" class="btn-ghost">← Précédent</button>
-                    <button type="button" x-on:click="step = 3; window.scrollTo({top:0, behavior:'smooth'})" class="btn-primary">Étape suivante →</button>
+                    <button type="button" x-on:click="step = 1; window.scrollTo({top:0, behavior:'smooth'})" class="btn-ghost"><x-icon name="arrow-left" /> Précédent</button>
+                    <button type="button" x-on:click="step = 3; window.scrollTo({top:0, behavior:'smooth'})" class="btn-primary">Étape suivante <x-icon name="arrow-right" /></button>
                 </div>
             </div>
 
@@ -117,17 +119,21 @@
                 @endforeach
 
                 <div class="flex flex-wrap items-center gap-3 justify-between">
-                    <button type="button" x-on:click="step = 2; window.scrollTo({top:0, behavior:'smooth'})" class="btn-ghost">← Précédent</button>
+                    <button type="button" x-on:click="step = 2; window.scrollTo({top:0, behavior:'smooth'})" class="btn-ghost"><x-icon name="arrow-left" /> Précédent</button>
                     <div class="flex flex-wrap gap-3">
                         @if($application->isDraft())
-                            <button type="submit" name="submit" value="0" class="btn-secondary">💾 Enregistrer le brouillon</button>
+                            <button type="submit" name="submit" value="0" class="btn-secondary">
+                                <x-icon name="floppy-disk" /> Enregistrer le brouillon
+                            </button>
                             <button type="submit" name="submit" value="1" class="btn-primary"
                                     onclick="return confirm('Soumettre votre candidature ? Vous pourrez la mettre à jour tant que les candidatures sont ouvertes.')">
-                                ✓ Soumettre ma candidature
+                                <x-icon name="paper-plane-tilt" /> Soumettre ma candidature
                             </button>
                         @else
                             {{-- Candidature déjà soumise mais encore éditable --}}
-                            <button type="submit" name="submit" value="0" class="btn-primary">💾 Enregistrer les modifications</button>
+                            <button type="submit" name="submit" value="0" class="btn-primary">
+                                <x-icon name="floppy-disk" /> Enregistrer les modifications
+                            </button>
                         @endif
                     </div>
                 </div>

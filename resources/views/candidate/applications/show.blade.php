@@ -1,7 +1,9 @@
 @extends('layouts.app')
 @section('title', 'Ma candidature')
 @section('content')
-    <a href="{{ route('candidate.applications.index') }}" class="text-sm text-slate-500 hover:underline">← Mes candidatures</a>
+    <a href="{{ route('candidate.applications.index') }}" class="text-sm text-slate-500 hover:underline inline-flex items-center gap-1">
+        <x-icon name="arrow-left" /> Mes candidatures
+    </a>
     <div class="flex items-start justify-between mt-2 mb-6">
         <div>
             <h1 class="text-2xl font-bold">{{ $application->program->title }}</h1>
@@ -9,7 +11,7 @@
         </div>
         @if($application->isEditable())
             <a href="{{ route('candidate.applications.edit', $application) }}" class="btn-primary">
-                ✏️ {{ $application->isDraft() ? 'Continuer la candidature' : 'Modifier le dossier' }}
+                <x-icon name="pencil-simple" /> {{ $application->isDraft() ? 'Continuer la candidature' : 'Modifier le dossier' }}
             </a>
         @endif
     </div>
@@ -33,7 +35,8 @@
 
     @if($application->isEditable() && ! $application->isDraft())
         <x-alert type="info">
-            ✏️ <b>Vous pouvez encore modifier votre dossier</b> jusqu'à la clôture des candidatures, le
+            <span class="inline-flex items-center gap-2"><x-icon name="pencil-simple" /> <b>Vous pouvez encore modifier votre dossier</b></span>
+            jusqu'à la clôture des candidatures, le
             <b>{{ $application->program->application_closes_at?->format('d/m/Y') ?? '—' }}</b>.
         </x-alert>
     @endif
@@ -129,7 +132,9 @@
                 <div class="card-header @if($isHealth) bg-amber-50 @endif">
                     <h2 class="font-semibold">{{ $sectionLabels[$sectionKey] ?? $sectionKey }}</h2>
                     @if($isHealth)
-                        <span class="text-xs text-amber-700">⚠ Confidentiel</span>
+                        <span class="text-xs text-amber-700 inline-flex items-center gap-1">
+                            <x-icon name="warning" weight="fill" /> Confidentiel
+                        </span>
                     @endif
                 </div>
                 <div class="card-body">
@@ -157,15 +162,17 @@
                                                     <img src="{{ $value->url() }}" alt="" class="w-20 h-20 object-cover rounded border">
                                                 </a>
                                             @elseif($isVideo)
-                                                <span class="text-2xl">🎥</span>
+                                                <x-icon name="film-strip" class="text-2xl text-slate-400" />
                                             @else
-                                                <span class="text-2xl">📄</span>
+                                                <x-icon name="file-text" class="text-2xl text-slate-400" />
                                             @endif
                                             <div>
                                                 <p class="font-medium truncate">{{ $value->original_name }}</p>
                                                 <p class="text-xs text-slate-500">{{ $value->humanSize() }}</p>
                                                 <a href="{{ $value->url() }}" target="_blank"
-                                                   class="text-xs text-brand-600 hover:underline">👁️ Consulter</a>
+                                                   class="text-xs text-brand-600 hover:underline inline-flex items-center gap-1">
+                                                    <x-icon name="eye" /> Consulter
+                                                </a>
                                             </div>
                                         </div>
 

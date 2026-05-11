@@ -1,7 +1,9 @@
 @extends('layouts.app')
 @section('title', 'Évaluation — '.$evaluation->application->reference)
 @section('content')
-    <a href="{{ route('jury.dashboard') }}" class="text-sm text-slate-500 hover:underline">← Mes évaluations</a>
+    <a href="{{ route('jury.dashboard') }}" class="text-sm text-slate-500 hover:underline inline-flex items-center gap-1">
+        <x-icon name="arrow-left" /> Mes évaluations
+    </a>
     <div class="mt-2 flex items-start justify-between mb-6">
         <div>
             <p class="text-xs text-slate-400 uppercase">{{ $evaluation->application->program->title }}</p>
@@ -81,7 +83,7 @@
                     <div class="card @if($isHealth) border-amber-200 @endif">
                         <div class="card-header sticky top-0 bg-white z-10 @if($isHealth) bg-amber-50 @endif">
                             <h2 class="font-semibold">{{ $sectionLabels[$sectionKey] ?? $sectionKey }}</h2>
-                            @if($isHealth)<span class="text-xs text-amber-700">⚠ Confidentiel</span>@endif
+                            @if($isHealth)<span class="text-xs text-amber-700 inline-flex items-center gap-1"><x-icon name="warning" weight="fill" /> Confidentiel</span>@endif
                         </div>
                         <div class="card-body">
                             <dl class="grid md:grid-cols-2 gap-x-4 gap-y-3 text-sm">
@@ -103,11 +105,13 @@
                                                             <img src="{{ $value->url() }}" alt="" class="w-16 h-16 object-cover rounded border">
                                                         </a>
                                                     @else
-                                                        <span class="text-2xl">📄</span>
+                                                        <x-icon name="file-text" class="text-2xl text-slate-400" />
                                                     @endif
                                                     <div>
                                                         <p class="font-medium">{{ $value->original_name }}</p>
-                                                        <a href="{{ $value->url() }}" target="_blank" class="text-xs text-brand-600 hover:underline">👁️ Consulter</a>
+                                                        <a href="{{ $value->url() }}" target="_blank" class="text-xs text-brand-600 hover:underline inline-flex items-center gap-1">
+                                                            <x-icon name="eye" /> Consulter
+                                                        </a>
                                                     </div>
                                                 </div>
                                             @elseif($field->type === 'textarea')
@@ -132,7 +136,9 @@
                 <div class="card-header">
                     <h2 class="font-semibold">Grille d'évaluation</h2>
                     @if($evaluation->status?->value === 'submitted')
-                        <span class="text-xs text-emerald-600">✓ Déjà soumise — modification désactivée</span>
+                        <span class="text-xs text-emerald-600 inline-flex items-center gap-1">
+                            <x-icon name="check-circle" weight="fill" /> Déjà soumise — modification désactivée
+                        </span>
                     @endif
                 </div>
                 <div class="card-body space-y-4 max-h-[calc(100vh-280px)] overflow-y-auto">
@@ -163,7 +169,7 @@
                     <div class="card-body border-t border-slate-100">
                         <button class="btn-primary w-full"
                                 onclick="return confirm('Soumettre cette évaluation ? Action définitive — vous ne pourrez plus modifier après.')">
-                            ✓ Soumettre l'évaluation
+                            <x-icon name="paper-plane-tilt" /> Soumettre l'évaluation
                         </button>
                     </div>
                 @else

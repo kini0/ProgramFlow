@@ -1,7 +1,9 @@
 @extends('layouts.app')
 @section('title', 'Form Builder — '.$program->title)
 @section('content')
-    <a href="{{ route('admin.programs.show', $program) }}" class="text-sm text-slate-500 hover:underline">← Retour au programme</a>
+    <a href="{{ route('admin.programs.show', $program) }}" class="text-sm text-slate-500 hover:underline inline-flex items-center gap-1">
+        <x-icon name="arrow-left" /> Retour au programme
+    </a>
     <div class="flex items-start justify-between mt-2 mb-6">
         <div>
             <h1 class="text-2xl font-bold">Form Builder</h1>
@@ -27,7 +29,9 @@
                     <ul id="fields-list" class="space-y-2">
                         @foreach($fields as $field)
                             <li data-id="{{ $field->id }}" class="border border-slate-200 rounded-lg p-3 bg-white flex items-start gap-3">
-                                <span class="cursor-grab text-slate-400 select-none mt-1">☰</span>
+                                <span class="cursor-grab text-slate-400 select-none mt-1" title="Glisser pour réordonner">
+                                    <x-icon name="dots-six-vertical" class="text-lg" />
+                                </span>
                                 <div class="flex-1">
                                     <p class="font-medium">
                                         {{ $field->label }}

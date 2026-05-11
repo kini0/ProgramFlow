@@ -9,7 +9,9 @@
     <div class="card-header @if($isHealth) bg-amber-50 @endif">
         <h2 class="font-semibold">{{ $title }}</h2>
         @if($isHealth)
-            <span class="text-xs text-amber-700">⚠ Confidentiel — utilisé uniquement en cas de besoin</span>
+            <span class="text-xs text-amber-700 inline-flex items-center gap-1">
+                <x-icon name="warning" weight="fill" /> Confidentiel — utilisé uniquement en cas de besoin
+            </span>
         @endif
     </div>
     <div class="card-body space-y-4">
@@ -106,15 +108,17 @@
                                     <img src="{{ $doc->url() }}" alt="" class="w-16 h-16 object-cover rounded">
                                 </a>
                             @elseif($isVideo)
-                                <span class="text-3xl">🎥</span>
+                                <x-icon name="film-strip" class="text-3xl text-slate-400" />
                             @else
-                                <span class="text-3xl">📄</span>
+                                <x-icon name="file-text" class="text-3xl text-slate-400" />
                             @endif
                             <div class="flex-1 min-w-0">
                                 <p class="text-sm font-medium truncate">{{ $doc->original_name }}</p>
                                 <p class="text-xs text-slate-500">{{ $doc->humanSize() }} · {{ $doc->mime_type }}</p>
                                 <a href="{{ $doc->url() }}" target="_blank"
-                                   class="text-xs text-brand-600 hover:underline">👁️ Consulter / Télécharger</a>
+                                   class="text-xs text-brand-600 hover:underline inline-flex items-center gap-1">
+                                    <x-icon name="eye" /> Consulter / Télécharger
+                                </a>
                             </div>
                         </div>
                         <p class="text-xs text-slate-500 mb-1">Vous pouvez choisir un nouveau fichier pour remplacer celui-ci :</p>

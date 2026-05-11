@@ -1,13 +1,15 @@
 @extends('layouts.app')
 @section('title', 'Rapports — '.$program->title)
 @section('content')
-    <a href="{{ route('admin.programs.show', $program) }}" class="text-sm text-slate-500 hover:underline">← Retour au programme</a>
+    <a href="{{ route('admin.programs.show', $program) }}" class="text-sm text-slate-500 hover:underline inline-flex items-center gap-1">
+        <x-icon name="arrow-left" /> Retour au programme
+    </a>
     <div class="flex items-center justify-between mt-2 mb-6">
         <div>
             <h1 class="text-2xl font-bold">Rapports d'activité</h1>
             <p class="text-slate-500">{{ $program->title }}</p>
         </div>
-        <a href="{{ route('admin.programs.activityReports.create', $program) }}" class="btn-primary">+ Nouveau rapport</a>
+        <a href="{{ route('admin.programs.activityReports.create', $program) }}" class="btn-primary"><x-icon name="plus" /> Nouveau rapport</a>
     </div>
 
     @if($program->activityReports->isEmpty())

@@ -8,10 +8,10 @@
             <div class="mt-2"><x-status-badge :label="$program->status->label()" :color="$program->status->color()" /></div>
         </div>
         <div class="flex gap-2">
-            <a href="{{ route('organizer.programs.applications.index', $program) }}" class="btn-secondary">Candidatures</a>
-            <a href="{{ route('admin.programs.fields.index', $program) }}" class="btn-secondary">Form Builder</a>
-            <a href="{{ route('admin.programs.activityReports.index', $program) }}" class="btn-secondary">Rapports</a>
-            <a href="{{ route('admin.programs.edit', $program) }}" class="btn-primary">Modifier</a>
+            <a href="{{ route('organizer.programs.applications.index', $program) }}" class="btn-secondary"><x-icon name="tray" /> Candidatures</a>
+            <a href="{{ route('admin.programs.fields.index', $program) }}" class="btn-secondary"><x-icon name="sliders-horizontal" /> Form Builder</a>
+            <a href="{{ route('admin.programs.activityReports.index', $program) }}" class="btn-secondary"><x-icon name="newspaper" /> Rapports</a>
+            <a href="{{ route('admin.programs.edit', $program) }}" class="btn-primary"><x-icon name="pencil-simple" /> Modifier</a>
         </div>
     </div>
 
@@ -21,9 +21,9 @@
         <div class="card lg:col-span-2">
             <div class="card-header"><h2 class="font-semibold">Informations</h2></div>
             <div class="card-body space-y-3 text-sm">
-                <p><b>Période :</b> {{ $program->starts_at?->format('d/m/Y') }} → {{ $program->ends_at?->format('d/m/Y') }}</p>
+                <p><b>Période :</b> {{ $program->starts_at?->format('d/m/Y') }} <x-icon name="arrow-right" class="text-slate-300" /> {{ $program->ends_at?->format('d/m/Y') }}</p>
                 <p><b>Places :</b> {{ $program->seats }}</p>
-                <p><b>Candidatures :</b> {{ $program->application_opens_at?->format('d/m/Y') }} → {{ $program->application_closes_at?->format('d/m/Y') }}</p>
+                <p><b>Candidatures :</b> {{ $program->application_opens_at?->format('d/m/Y') }} <x-icon name="arrow-right" class="text-slate-300" /> {{ $program->application_closes_at?->format('d/m/Y') }}</p>
                 @if($program->objectives)<p class="pt-2 border-t border-slate-100"><b>Objectifs :</b><br><span class="whitespace-pre-line">{{ $program->objectives }}</span></p>@endif
                 @if($program->eligibility)<p><b>Éligibilité :</b><br><span class="whitespace-pre-line">{{ $program->eligibility }}</span></p>@endif
             </div>
@@ -124,7 +124,7 @@
                                           onsubmit="return confirm('Retirer ce membre ?')">
                                         @csrf @method('DELETE')
                                         <input type="hidden" name="role" value="{{ $roleKey }}">
-                                        <button class="text-xs text-red-500 hover:underline">×</button>
+                                        <button class="text-xs text-red-500 hover:underline" title="Retirer"><x-icon name="x" /></button>
                                     </form>
                                 </div>
                             @endforeach

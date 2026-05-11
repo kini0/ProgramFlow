@@ -1,13 +1,17 @@
 @extends('layouts.app')
 @section('title', $report->title)
 @section('content')
-    <a href="{{ route('admin.programs.activityReports.index', $program) }}" class="text-sm text-slate-500 hover:underline">← Rapports</a>
+    <a href="{{ route('admin.programs.activityReports.index', $program) }}" class="text-sm text-slate-500 hover:underline inline-flex items-center gap-1">
+        <x-icon name="arrow-left" /> Rapports
+    </a>
 
     <div class="flex items-start justify-between mt-2 mb-6">
         <div>
-            <div class="flex items-center gap-2">
+            <div class="flex items-center gap-2 flex-wrap">
                 <x-status-badge :label="$report->status->label()" :color="$report->status->color()" />
-                <span class="text-xs text-slate-400">📅 {{ $report->activity_date->format('d/m/Y') }}</span>
+                <span class="text-xs text-slate-400 inline-flex items-center gap-1">
+                    <x-icon name="calendar-blank" /> {{ $report->activity_date->format('d/m/Y') }}
+                </span>
                 <span class="text-xs text-slate-400">· par {{ $report->creator?->full_name ?? '—' }}</span>
                 @if($report->published_at)<span class="text-xs text-slate-400">· publié le {{ $report->published_at->format('d/m/Y') }}</span>@endif
             </div>
@@ -18,10 +22,10 @@
             @if(! $report->isPublished())
                 <form method="POST" action="{{ route('admin.programs.activityReports.publish', [$program, $report]) }}">
                     @csrf
-                    <button class="btn-primary">📢 Publier</button>
+                    <button class="btn-primary"><x-icon name="megaphone" /> Publier</button>
                 </form>
             @endif
-            <a href="{{ route('admin.programs.activityReports.edit', [$program, $report]) }}" class="btn-secondary">Modifier</a>
+            <a href="{{ route('admin.programs.activityReports.edit', [$program, $report]) }}" class="btn-secondary"><x-icon name="pencil-simple" /> Modifier</a>
         </div>
     </div>
 
@@ -41,11 +45,11 @@
     {{-- Fichier principal --}}
     @if($report->reportFile->isNotEmpty())
         <div class="card mb-6">
-            <div class="card-header"><h2 class="font-semibold">📄 Document</h2></div>
+            <div class="card-header"><h2 class="font-semibold flex items-center gap-2"><x-icon name="file-text" /> Document</h2></div>
             <div class="card-body">
                 @foreach($report->reportFile as $file)
                     <a href="{{ $file->url() }}" target="_blank" class="btn-secondary">
-                        📥 Télécharger {{ $file->original_name }} ({{ $file->humanSize() }})
+                        <x-icon name="download-simple" /> Télécharger {{ $file->original_name }} ({{ $file->humanSize() }})
                     </a>
                 @endforeach
             </div>
@@ -55,7 +59,7 @@
     {{-- Galerie images --}}
     @if($report->galleryImages->count() > 0)
         <div class="card mb-6">
-            <div class="card-header"><h2 class="font-semibold">🖼 Galerie ({{ $report->galleryImages->count() }})</h2></div>
+            <div class="card-header"><h2 class="font-semibold flex items-center gap-2"><x-icon name="images" /> Galerie ({{ $report->galleryImages->count() }})</h2></div>
             <div class="card-body grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
                 @foreach($report->galleryImages as $img)
                     <a href="{{ \Storage::url($img->path) }}" target="_blank">
@@ -69,7 +73,7 @@
     {{-- Vidéos --}}
     @if($report->galleryVideos->count() > 0)
         <div class="card mb-6">
-            <div class="card-header"><h2 class="font-semibold">🎥 Vidéos</h2></div>
+            <div class="card-header"><h2 class="font-semibold flex items-center gap-2"><x-icon name="film-strip" /> Vidéos</h2></div>
             <div class="card-body grid md:grid-cols-2 gap-4">
                 @foreach($report->galleryVideos as $video)
                     <video controls class="w-full rounded">
@@ -83,6 +87,6 @@
     <form method="POST" action="{{ route('admin.programs.activityReports.destroy', [$program, $report]) }}"
           onsubmit="return confirm('Supprimer définitivement ce rapport ?')">
         @csrf @method('DELETE')
-        <button class="btn-danger text-sm">Supprimer le rapport</button>
+        <button class="btn-danger text-sm"><x-icon name="trash" /> Supprimer le rapport</button>
     </form>
 @endsection

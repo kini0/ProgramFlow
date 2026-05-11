@@ -1,7 +1,9 @@
 @extends('layouts.app')
 @section('title', 'Candidature '.$application->reference)
 @section('content')
-    <a href="{{ route('organizer.programs.applications.index', $program) }}" class="text-sm text-slate-500 hover:underline">← Liste des candidatures</a>
+    <a href="{{ route('organizer.programs.applications.index', $program) }}" class="text-sm text-slate-500 hover:underline inline-flex items-center gap-1">
+        <x-icon name="arrow-left" /> Liste des candidatures
+    </a>
 
     <div class="mt-2 flex items-start justify-between mb-6">
         <div>
@@ -93,7 +95,7 @@
                     <div class="card @if($isHealth) border-amber-200 @endif">
                         <div class="card-header @if($isHealth) bg-amber-50 @endif">
                             <h2 class="font-semibold">{{ $sectionLabels[$sectionKey] ?? $sectionKey }}</h2>
-                            @if($isHealth)<span class="text-xs text-amber-700">⚠ Confidentiel</span>@endif
+                            @if($isHealth)<span class="text-xs text-amber-700 inline-flex items-center gap-1"><x-icon name="warning" weight="fill" /> Confidentiel</span>@endif
                         </div>
                         <div class="card-body">
                             <dl class="grid md:grid-cols-2 gap-x-6 gap-y-3 text-sm">
@@ -117,12 +119,14 @@
                                                             <img src="{{ $value->url() }}" alt="" class="w-16 h-16 object-cover rounded border">
                                                         </a>
                                                     @else
-                                                        <span class="text-2xl">📄</span>
+                                                        <x-icon name="file-text" class="text-2xl text-slate-400" />
                                                     @endif
                                                     <div>
                                                         <p class="font-medium">{{ $value->original_name }}</p>
                                                         <p class="text-xs text-slate-500">{{ $value->humanSize() }}</p>
-                                                        <a href="{{ $value->url() }}" target="_blank" class="text-xs text-brand-600 hover:underline">👁️ Consulter / Télécharger</a>
+                                                        <a href="{{ $value->url() }}" target="_blank" class="text-xs text-brand-600 hover:underline inline-flex items-center gap-1">
+                                                            <x-icon name="eye" /> Consulter / Télécharger
+                                                        </a>
                                                     </div>
                                                 </div>
                                             @elseif($field->type === 'textarea')
@@ -176,9 +180,10 @@
                 <div class="card-header"><h2 class="font-semibold">Jurys du programme</h2></div>
                 <div class="card-body text-sm space-y-2">
                     @if($program->juries->isEmpty())
-                        <p class="text-amber-600 bg-amber-50 rounded p-2 text-xs">
-                            ⚠️ Aucun jury n'est associé à ce programme. Demandez à l'admin d'en ajouter
-                            via la fiche du programme — sans jury, aucune évaluation n'est possible.
+                        <p class="text-amber-600 bg-amber-50 rounded p-2 text-xs inline-flex items-start gap-2">
+                            <x-icon name="warning" weight="fill" class="mt-0.5" />
+                            <span>Aucun jury n'est associé à ce programme. Demandez à l'admin d'en ajouter
+                            via la fiche du programme — sans jury, aucune évaluation n'est possible.</span>
                         </p>
                     @else
                         <p class="text-xs text-slate-500 mb-2">
@@ -192,9 +197,11 @@
                         @foreach($juriesById as $jury)
                             @php $eval = $evalByJuryId[$jury->id] ?? null; @endphp
                             <div class="flex items-center justify-between py-1 border-b border-slate-100 last:border-0">
-                                <span>⚖️ {{ $jury->full_name }}</span>
+                                <span class="inline-flex items-center gap-2"><x-icon name="scales" /> {{ $jury->full_name }}</span>
                                 @if($eval && $eval->status->value === 'submitted')
-                                    <span class="text-xs text-emerald-600">✓ {{ $eval->weighted_score }}</span>
+                                    <span class="text-xs text-emerald-600 inline-flex items-center gap-1">
+                                        <x-icon name="check-circle" weight="fill" /> {{ $eval->weighted_score }}
+                                    </span>
                                 @elseif($eval)
                                     <x-status-badge :label="$eval->status->label()" :color="$eval->status->color()" />
                                 @else

@@ -5,25 +5,25 @@
 
     if ($user?->hasRole(UserRole::Admin->value)) {
         $items = collect([
-            ['route' => 'admin.dashboard', 'label' => 'Tableau de bord', 'icon' => 'home'],
-            ['route' => 'admin.programs.index', 'label' => 'Programmes', 'icon' => 'briefcase'],
-            ['route' => 'admin.partners.index', 'label' => 'Partenaires', 'icon' => 'handshake'],
-            ['route' => 'admin.users.index',    'label' => 'Utilisateurs', 'icon' => 'users'],
-            ['route' => 'admin.reports.index',  'label' => 'Reporting', 'icon' => 'chart'],
+            ['route' => 'admin.dashboard',      'label' => 'Tableau de bord', 'icon' => 'house'],
+            ['route' => 'admin.programs.index', 'label' => 'Programmes',      'icon' => 'briefcase'],
+            ['route' => 'admin.partners.index', 'label' => 'Partenaires',     'icon' => 'handshake'],
+            ['route' => 'admin.users.index',    'label' => 'Utilisateurs',    'icon' => 'users-three'],
+            ['route' => 'admin.reports.index',  'label' => 'Reporting',       'icon' => 'chart-bar'],
         ]);
     } elseif ($user?->hasRole(UserRole::Organizer->value)) {
         $items = collect([
-            ['route' => 'organizer.dashboard', 'label' => 'Mes programmes', 'icon' => 'home'],
+            ['route' => 'organizer.dashboard', 'label' => 'Mes programmes', 'icon' => 'briefcase'],
         ]);
     } elseif ($user?->hasRole(UserRole::Jury->value)) {
         $items = collect([
-            ['route' => 'jury.dashboard',         'label' => 'À évaluer',     'icon' => 'check'],
-            ['route' => 'jury.programs.index',    'label' => 'Mes programmes', 'icon' => 'briefcase'],
+            ['route' => 'jury.dashboard',      'label' => 'À évaluer',     'icon' => 'check-square'],
+            ['route' => 'jury.programs.index', 'label' => 'Mes programmes', 'icon' => 'briefcase'],
         ]);
     } elseif ($user?->hasRole(UserRole::Candidate->value)) {
         $items = collect([
-            ['route' => 'candidate.dashboard',          'label' => 'Mon tableau de bord', 'icon' => 'home'],
-            ['route' => 'candidate.applications.index','label' => 'Mes candidatures', 'icon' => 'doc'],
+            ['route' => 'candidate.dashboard',          'label' => 'Mon tableau de bord', 'icon' => 'house'],
+            ['route' => 'candidate.applications.index', 'label' => 'Mes candidatures',    'icon' => 'file-text'],
         ]);
     } elseif ($user?->hasRole(UserRole::Partner->value)) {
         $items = collect([
@@ -43,7 +43,7 @@
             @php $active = request()->routeIs($item['route']); @endphp
             <a href="{{ route($item['route']) }}"
                class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium {{ $active ? 'bg-brand-50 text-brand-700' : 'text-slate-700 hover:bg-slate-100' }}">
-                <span class="w-5 h-5 inline-flex items-center justify-center text-slate-400">●</span>
+                <x-icon :name="$item['icon']" class="text-lg {{ $active ? 'text-brand-600' : 'text-slate-400' }}" />
                 {{ $item['label'] }}
             </a>
         @endforeach
