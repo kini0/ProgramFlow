@@ -25,8 +25,9 @@
                     </div>
 
                     @if(! $isOpenForEval)
-                        <p class="mt-3 text-xs text-amber-600 bg-amber-50 rounded px-2 py-1">
-                            ⏳ Période de candidature en cours.
+                        <p class="mt-3 text-xs text-amber-600 bg-amber-50 rounded px-2 py-1 flex items-center gap-1">
+                            <x-icon name="hourglass" />
+                            Période de candidature en cours.
                             @if($program->application_closes_at)
                                 Évaluation possible à partir du {{ $program->application_closes_at->copy()->addDay()->format('d/m/Y') }}.
                             @endif

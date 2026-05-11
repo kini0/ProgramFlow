@@ -7,6 +7,8 @@
     <title>{{ config('app.name') }} — @yield('title', 'Tableau de bord')</title>
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600,700&display=swap" rel="stylesheet">
+    {{-- Phosphor Icons (1300+ icônes SVG via web-font, plusieurs poids) --}}
+    <script src="https://unpkg.com/@phosphor-icons/web@2.1.1" defer></script>
     @vite(['resources/css/app.css','resources/js/app.js'])
 </head>
 <body class="min-h-screen flex flex-col">

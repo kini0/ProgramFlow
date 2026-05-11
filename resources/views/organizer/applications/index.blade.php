@@ -12,17 +12,19 @@
     </div>
 
     <div class="flex flex-wrap gap-2 mb-4">
-        <a href="{{ route('organizer.programs.applications.index', $program) }}" class="btn-secondary text-sm">📥 Candidatures</a>
-        <a href="{{ route('organizer.programs.selection.show', $program) }}" class="btn-secondary text-sm">🏆 Sélection</a>
-        <a href="{{ route('organizer.programs.sessions.index', $program) }}" class="btn-secondary text-sm">📅 Sessions</a>
-        <a href="{{ route('admin.programs.activityReports.index', $program) }}" class="btn-secondary text-sm">📰 Rapports d'activité</a>
+        <a href="{{ route('organizer.programs.applications.index', $program) }}" class="btn-secondary text-sm"><x-icon name="tray" /> Candidatures</a>
+        <a href="{{ route('organizer.programs.selection.show', $program) }}" class="btn-secondary text-sm"><x-icon name="trophy" /> Sélection</a>
+        <a href="{{ route('organizer.programs.sessions.index', $program) }}" class="btn-secondary text-sm"><x-icon name="calendar" /> Sessions</a>
+        <a href="{{ route('admin.programs.activityReports.index', $program) }}" class="btn-secondary text-sm"><x-icon name="newspaper" /> Rapports d'activité</a>
     </div>
 
     @if(in_array($program->status->value, ['open', 'published']) && $stats['submitted'] > 0)
         @php $closesAt = $program->application_closes_at; @endphp
         <div class="card card-body mb-6 bg-amber-50 border-amber-200 flex items-center justify-between">
             <div>
-                <p class="font-semibold text-amber-800">🔒 Clôturer les candidatures et démarrer l'évaluation</p>
+                <p class="font-semibold text-amber-800 flex items-center gap-2">
+                    <x-icon name="lock" /> Clôturer les candidatures et démarrer l'évaluation
+                </p>
                 <p class="text-sm text-amber-700 mt-1">
                     @if($closesAt && $closesAt->isFuture())
                         Date prévue de clôture : <b>{{ $closesAt->format('d/m/Y') }}</b>.
@@ -30,7 +32,9 @@
                         La période de candidature est passée. Lancez l'évaluation pour activer les jurys.
                     @endif
                     @if($program->juries->isEmpty())
-                        <span class="text-red-600 font-semibold">⚠️ Aucun jury associé — l'évaluation sera impossible.</span>
+                        <span class="text-red-600 font-semibold inline-flex items-center gap-1">
+                            <x-icon name="warning" weight="fill" /> Aucun jury associé — l'évaluation sera impossible.
+                        </span>
                     @else
                         Les <b>{{ $program->juries->count() }} jury(s)</b> du programme évalueront automatiquement les {{ $stats['submitted'] }} candidature(s) soumise(s).
                     @endif

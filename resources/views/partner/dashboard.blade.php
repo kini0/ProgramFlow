@@ -20,7 +20,9 @@
                 <div class="card card-body">
                     <h3 class="font-semibold">{{ $program->title }}</h3>
                     <div class="mt-2"><x-status-badge :label="$program->status->label()" :color="$program->status->color()" /></div>
-                    <p class="mt-3 text-sm text-slate-600">📥 {{ $program->applications_count }} candidatures</p>
+                    <p class="mt-3 text-sm text-slate-600 flex items-center gap-1">
+                        <x-icon name="tray" /> {{ $program->applications_count }} candidatures
+                    </p>
                 </div>
             @empty
                 <p class="text-slate-500 col-span-full">Aucun programme associé.</p>

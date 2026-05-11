@@ -29,10 +29,10 @@
                 </div>
 
                 <div class="mt-4 grid grid-cols-2 gap-2">
-                    <a href="{{ route('organizer.programs.applications.index', $program) }}" class="btn-secondary text-sm">📥 Candidatures</a>
-                    <a href="{{ route('organizer.programs.selection.show', $program) }}" class="btn-secondary text-sm">🏆 Sélection</a>
-                    <a href="{{ route('organizer.programs.sessions.index', $program) }}" class="btn-secondary text-sm">📅 Sessions</a>
-                    <a href="{{ route('admin.programs.activityReports.index', $program) }}" class="btn-secondary text-sm">📰 Rapports</a>
+                    <a href="{{ route('organizer.programs.applications.index', $program) }}" class="btn-secondary text-sm"><x-icon name="tray" /> Candidatures</a>
+                    <a href="{{ route('organizer.programs.selection.show', $program) }}" class="btn-secondary text-sm"><x-icon name="trophy" /> Sélection</a>
+                    <a href="{{ route('organizer.programs.sessions.index', $program) }}" class="btn-secondary text-sm"><x-icon name="calendar" /> Sessions</a>
+                    <a href="{{ route('admin.programs.activityReports.index', $program) }}" class="btn-secondary text-sm"><x-icon name="newspaper" /> Rapports</a>
                 </div>
             </div>
         @empty

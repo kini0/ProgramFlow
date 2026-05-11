@@ -1,7 +1,9 @@
 @extends('layouts.app')
 @section('title', 'Évaluations — '.$program->title)
 @section('content')
-    <a href="{{ route('jury.programs.index') }}" class="text-sm text-slate-500 hover:underline">← Mes programmes</a>
+    <a href="{{ route('jury.programs.index') }}" class="text-sm text-slate-500 hover:underline inline-flex items-center gap-1">
+        <x-icon name="arrow-left" /> Mes programmes
+    </a>
     <div class="flex items-start justify-between mt-2 mb-6">
         <div>
             <h1 class="text-2xl font-bold">{{ $program->title }}</h1>
@@ -12,7 +14,7 @@
 
     @if(! $isOpenForEval)
         <x-alert type="warning">
-            ⏳ <b>L'évaluation n'est pas encore ouverte.</b>
+            <span class="inline-flex items-center gap-2"><x-icon name="hourglass" /> <b>L'évaluation n'est pas encore ouverte.</b></span>
             Les candidatures sont actuellement en cours de soumission jusqu'au
             <b>{{ $program->application_closes_at?->format('d/m/Y') ?? '—' }}</b>.
             Vous pourrez consulter et évaluer les dossiers à partir du lendemain.

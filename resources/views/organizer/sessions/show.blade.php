@@ -1,16 +1,18 @@
 @extends('layouts.app')
 @section('title', $session->title)
 @section('content')
-    <a href="{{ route('organizer.programs.sessions.index', $program) }}" class="text-sm text-slate-500 hover:underline">← Sessions</a>
+    <a href="{{ route('organizer.programs.sessions.index', $program) }}" class="text-sm text-slate-500 hover:underline inline-flex items-center gap-1">
+        <x-icon name="arrow-left" /> Sessions
+    </a>
     <h1 class="text-2xl font-bold mt-2 mb-6">{{ $session->title }}</h1>
 
     <div class="grid lg:grid-cols-2 gap-6">
         <div class="card">
             <div class="card-header"><h2 class="font-semibold">Informations</h2></div>
             <div class="card-body text-sm space-y-2">
-                <p>📅 {{ $session->starts_at->format('d/m/Y H:i') }} → {{ $session->ends_at?->format('d/m/Y H:i') ?? '—' }}</p>
-                <p>📍 {{ $session->location ?? '—' }}</p>
-                <p>🎤 Facilitateur : {{ $session->facilitator?->full_name ?? '—' }}</p>
+                <p class="flex items-center gap-2"><x-icon name="calendar" class="text-slate-400" /> {{ $session->starts_at->format('d/m/Y H:i') }} <x-icon name="arrow-right" class="text-slate-300" /> {{ $session->ends_at?->format('d/m/Y H:i') ?? '—' }}</p>
+                <p class="flex items-center gap-2"><x-icon name="map-pin" class="text-slate-400" /> {{ $session->location ?? '—' }}</p>
+                <p class="flex items-center gap-2"><x-icon name="microphone" class="text-slate-400" /> Facilitateur : {{ $session->facilitator?->full_name ?? '—' }}</p>
             </div>
         </div>
 

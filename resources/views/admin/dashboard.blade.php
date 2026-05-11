@@ -14,19 +14,19 @@
         <div class="card">
             <div class="card-header"><h2 class="font-semibold">Programmes par statut</h2></div>
             <div class="card-body space-y-2 text-sm">
-                <p>📂 Brouillons / Publiés : {{ $stats['total'] - $stats['open'] - $stats['active'] - $stats['archived'] }}</p>
-                <p>✅ En cours : {{ $stats['active'] }}</p>
-                <p>🏁 Terminés : {{ $stats['completed'] }}</p>
-                <p>📦 Archivés : {{ $stats['archived'] }}</p>
+                <p class="flex items-center gap-2"><x-icon name="folder" class="text-slate-400"/> Brouillons / Publiés : <b>{{ $stats['total'] - $stats['open'] - $stats['active'] - $stats['archived'] }}</b></p>
+                <p class="flex items-center gap-2"><x-icon name="play-circle" class="text-emerald-500"/> En cours : <b>{{ $stats['active'] }}</b></p>
+                <p class="flex items-center gap-2"><x-icon name="check-circle" class="text-teal-500"/> Terminés : <b>{{ $stats['completed'] }}</b></p>
+                <p class="flex items-center gap-2"><x-icon name="archive" class="text-slate-400"/> Archivés : <b>{{ $stats['archived'] }}</b></p>
             </div>
         </div>
         <div class="card">
             <div class="card-header"><h2 class="font-semibold">Actions rapides</h2></div>
             <div class="card-body grid grid-cols-2 gap-3">
-                <a href="{{ route('admin.programs.create') }}" class="btn-primary">+ Nouveau programme</a>
-                <a href="{{ route('admin.users.create') }}" class="btn-secondary">+ Utilisateur</a>
-                <a href="{{ route('admin.partners.create') }}" class="btn-secondary">+ Partenaire</a>
-                <a href="{{ route('admin.reports.index') }}" class="btn-secondary">Rapports</a>
+                <a href="{{ route('admin.programs.create') }}" class="btn-primary"><x-icon name="plus" /> Nouveau programme</a>
+                <a href="{{ route('admin.users.create') }}" class="btn-secondary"><x-icon name="user-plus" /> Utilisateur</a>
+                <a href="{{ route('admin.partners.create') }}" class="btn-secondary"><x-icon name="handshake" /> Partenaire</a>
+                <a href="{{ route('admin.reports.index') }}" class="btn-secondary"><x-icon name="chart-bar" /> Rapports</a>
             </div>
         </div>
     </div>

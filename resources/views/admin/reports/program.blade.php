@@ -1,7 +1,9 @@
 @extends('layouts.app')
 @section('title', 'Rapport — '.$report['program']->title)
 @section('content')
-    <a href="{{ route('admin.reports.index') }}" class="text-sm text-slate-500 hover:underline">← Retour au reporting</a>
+    <a href="{{ route('admin.reports.index') }}" class="text-sm text-slate-500 hover:underline inline-flex items-center gap-1">
+        <x-icon name="arrow-left" /> Retour au reporting
+    </a>
     <h1 class="text-2xl font-bold mt-2 mb-6">Rapport : {{ $report['program']->title }}</h1>
 
     <div class="grid grid-cols-2 md:grid-cols-4 gap-4">

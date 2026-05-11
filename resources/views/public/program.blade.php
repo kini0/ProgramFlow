@@ -3,14 +3,16 @@
 @section('content')
     <section class="bg-white border-b border-slate-200">
         <div class="max-w-5xl mx-auto px-6 py-12">
-            <a href="{{ route('home') }}" class="text-sm text-slate-500 hover:text-brand-700">← Retour</a>
+            <a href="{{ route('home') }}" class="text-sm text-slate-500 hover:text-brand-700 inline-flex items-center gap-1">
+                <x-icon name="arrow-left" /> Retour
+            </a>
             <h1 class="mt-2 text-3xl font-bold text-slate-800">{{ $program->title }}</h1>
             <p class="mt-3 text-slate-600 text-lg">{{ $program->short_description }}</p>
 
-            <div class="mt-6 flex flex-wrap items-center gap-3 text-sm text-slate-600">
-                <span>📅 Du {{ $program->starts_at?->format('d/m/Y') ?? '—' }} au {{ $program->ends_at?->format('d/m/Y') ?? '—' }}</span>
-                <span>🪑 {{ $program->seats }} places</span>
-                <span>⏰ Candidatures jusqu'au {{ $program->application_closes_at?->format('d/m/Y') ?? '—' }}</span>
+            <div class="mt-6 flex flex-wrap items-center gap-4 text-sm text-slate-600">
+                <span class="inline-flex items-center gap-1"><x-icon name="calendar-blank" /> Du {{ $program->starts_at?->format('d/m/Y') ?? '—' }} au {{ $program->ends_at?->format('d/m/Y') ?? '—' }}</span>
+                <span class="inline-flex items-center gap-1"><x-icon name="users-three" /> {{ $program->seats }} places</span>
+                <span class="inline-flex items-center gap-1"><x-icon name="clock" /> Candidatures jusqu'au {{ $program->application_closes_at?->format('d/m/Y') ?? '—' }}</span>
             </div>
 
             <div class="mt-8 flex gap-3">
@@ -18,7 +20,7 @@
                     @if($program->isAcceptingApplications())
                         <form method="POST" action="{{ route('candidate.applications.start', $program) }}">
                             @csrf
-                            <button class="btn-primary">Postuler maintenant</button>
+                            <button class="btn-primary"><x-icon name="paper-plane-tilt" /> Postuler maintenant</button>
                         </form>
                     @else
                         <span class="badge bg-slate-100 text-slate-600">Candidatures fermées</span>
@@ -38,11 +40,11 @@
         </div>
         <div class="space-y-6">
             <div class="card card-body">
-                <h3 class="font-semibold mb-2">🎯 Objectifs</h3>
+                <h3 class="font-semibold mb-2 flex items-center gap-2"><x-icon name="target" class="text-brand-600" /> Objectifs</h3>
                 <p class="text-sm text-slate-600 whitespace-pre-line">{{ $program->objectives }}</p>
             </div>
             <div class="card card-body">
-                <h3 class="font-semibold mb-2">✅ Éligibilité</h3>
+                <h3 class="font-semibold mb-2 flex items-center gap-2"><x-icon name="check-circle" class="text-emerald-600" /> Éligibilité</h3>
                 <p class="text-sm text-slate-600 whitespace-pre-line">{{ $program->eligibility }}</p>
             </div>
         </div>

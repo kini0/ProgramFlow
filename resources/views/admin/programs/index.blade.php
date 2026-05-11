@@ -3,7 +3,7 @@
 @section('content')
     <div class="flex items-center justify-between mb-6">
         <h1 class="text-2xl font-bold text-slate-800">Programmes</h1>
-        <a href="{{ route('admin.programs.create') }}" class="btn-primary">+ Nouveau programme</a>
+        <a href="{{ route('admin.programs.create') }}" class="btn-primary"><x-icon name="plus" /> Nouveau programme</a>
     </div>
 
     <form method="GET" class="card card-body grid md:grid-cols-3 gap-3 mb-6">
@@ -25,7 +25,7 @@
                         <p class="text-xs text-slate-400">{{ $program->slug }}</p>
                     </td>
                     <td><x-status-badge :label="$program->status->label()" :color="$program->status->color()" /></td>
-                    <td>{{ $program->starts_at?->format('d/m/Y') ?? '—' }} → {{ $program->ends_at?->format('d/m/Y') ?? '—' }}</td>
+                    <td>{{ $program->starts_at?->format('d/m/Y') ?? '—' }} <x-icon name="arrow-right" class="text-slate-300" /> {{ $program->ends_at?->format('d/m/Y') ?? '—' }}</td>
                     <td>{{ $program->seats }}</td>
                     <td class="text-right">
                         <a href="{{ route('admin.programs.edit', $program) }}" class="text-brand-600 hover:underline text-sm">Modifier</a>

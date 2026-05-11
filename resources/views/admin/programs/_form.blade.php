@@ -24,7 +24,7 @@
 
 @unless($p)
     <x-alert type="info">
-        💡 Après la création, vous pourrez sur la fiche programme :
+        <span class="inline-flex items-center gap-2"><x-icon name="lightbulb" weight="fill" class="text-amber-500" /> Après la création, vous pourrez sur la fiche programme :</span>
         <ul class="list-disc list-inside mt-2 text-sm">
             <li>Associer des <b>partenaires</b> et leur attribuer un rôle</li>
             <li>Ajouter des <b>organisateurs et membres du jury</b></li>

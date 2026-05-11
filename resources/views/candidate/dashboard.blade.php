@@ -1,7 +1,9 @@
 @extends('layouts.app')
 @section('title', 'Mon espace')
 @section('content')
-    <h1 class="text-2xl font-bold text-slate-800 mb-2">Bonjour, {{ auth()->user()->first_name }} 👋</h1>
+    <h1 class="text-2xl font-bold text-slate-800 mb-2 flex items-center gap-2">
+        Bonjour, {{ auth()->user()->first_name }} <x-icon name="hand-waving" weight="fill" class="text-amber-400" />
+    </h1>
     <p class="text-slate-500 mb-8">Suivez vos candidatures et découvrez de nouveaux programmes.</p>
 
     <h2 class="text-lg font-semibold text-slate-700 mb-3">Mes candidatures récentes</h2>
@@ -28,7 +30,10 @@
                         @endif
                     </div>
                     @if(! $app->isDraft() && $app->program?->isAcceptingApplications())
-                        <p class="mt-2 text-xs text-amber-600">✏️ Vous pouvez encore modifier votre dossier jusqu'au {{ $app->program->application_closes_at?->format('d/m/Y') ?? 'la clôture' }}.</p>
+                        <p class="mt-2 text-xs text-amber-600 flex items-center gap-1">
+                            <x-icon name="pencil-simple" />
+                            Vous pouvez encore modifier votre dossier jusqu'au {{ $app->program->application_closes_at?->format('d/m/Y') ?? 'la clôture' }}.
+                        </p>
                     @endif
                 </div>
             @endforeach
