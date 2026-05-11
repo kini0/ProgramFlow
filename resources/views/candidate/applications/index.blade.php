@@ -12,9 +12,12 @@
                     <td>{{ $app->program?->title }}</td>
                     <td><x-status-badge :label="$app->status->label()" :color="$app->status->color()" /></td>
                     <td>{{ $app->updated_at->format('d/m/Y') }}</td>
-                    <td class="text-right">
+                    <td class="text-right space-x-2">
                         @if($app->isEditable())
-                            <a href="{{ route('candidate.applications.edit', $app) }}" class="text-brand-600 text-sm hover:underline">Continuer</a>
+                            <a href="{{ route('candidate.applications.edit', $app) }}" class="text-brand-600 text-sm hover:underline">
+                                {{ $app->isDraft() ? 'Continuer' : 'Modifier' }}
+                            </a>
+                            <a href="{{ route('candidate.applications.show', $app) }}" class="text-slate-500 text-sm hover:underline">Voir</a>
                         @else
                             <a href="{{ route('candidate.applications.show', $app) }}" class="text-brand-600 text-sm hover:underline">Voir</a>
                         @endif

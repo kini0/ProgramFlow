@@ -101,9 +101,56 @@ Route::middleware(['auth', 'role:'.UserRole::Admin->value])
         Route::resource('users',    Admin\UserController::class);
         Route::resource('programs', Admin\ProgramController::class);
         Route::post('programs/{program}/archive', [Admin\ProgramController::class, 'archive'])->name('programs.archive');
+
+        // Gestion des partenaires associés à un programme
+        Route::post('programs/{program}/partners', [Admin\ProgramPartnerController::class, 'store'])
+            ->name('programs.partners.store');
+        Route::patch('programs/{program}/partners/{partner}', [Admin\ProgramPartnerController::class, 'update'])
+            ->name('programs.partners.update');
+        Route::delete('programs/{program}/partners/{partner}', [Admin\ProgramPartnerController::class, 'destroy'])
+            ->name('programs.partners.destroy');
+
+        // Gestion des membres (organisateurs/jurys) d'un programme
+        Route::post('programs/{program}/members', [Admin\ProgramMemberController::class, 'store'])
+            ->name('programs.members.store');
+        Route::delete('programs/{program}/members/{user}', [Admin\ProgramMemberController::class, 'destroy'])
+            ->name('programs.members.destroy');
+
+        // Form Builder pour les champs dynamiques de candidature
+        Route::get('programs/{program}/fields', [Admin\ApplicationFieldController::class, 'index'])
+            ->name('programs.fields.index');
+        Route::post('programs/{program}/fields', [Admin\ApplicationFieldController::class, 'store'])
+            ->name('programs.fields.store');
+        Route::patch('programs/{program}/fields/{field}', [Admin\ApplicationFieldController::class, 'update'])
+            ->name('programs.fields.update');
+        Route::delete('programs/{program}/fields/{field}', [Admin\ApplicationFieldController::class, 'destroy'])
+            ->name('programs.fields.destroy');
+        Route::post('programs/{program}/fields/reorder', [Admin\ApplicationFieldController::class, 'reorder'])
+            ->name('programs.fields.reorder');
+
         Route::resource('partners', Admin\PartnerController::class);
         Route::get('reports',                       [Admin\ReportController::class, 'index'])->name('reports.index');
         Route::get('reports/programs/{program}',    [Admin\ReportController::class, 'program'])->name('reports.program');
+    });
+
+/*
+|--------------------------------------------------------------------------
+| Rapports d'activité (admin + organizer)
+|--------------------------------------------------------------------------
+*/
+Route::middleware(['auth', 'role:'.UserRole::Admin->value.'|'.UserRole::Organizer->value])
+    ->prefix('admin/programs/{program}/activity-reports')
+    ->name('admin.programs.activityReports.')
+    ->group(function () {
+        Route::get('/',              [Admin\ActivityReportController::class, 'index'])->name('index');
+        Route::get('/create',        [Admin\ActivityReportController::class, 'create'])->name('create');
+        Route::post('/',             [Admin\ActivityReportController::class, 'store'])->name('store');
+        Route::get('/{report}',      [Admin\ActivityReportController::class, 'show'])->name('show');
+        Route::get('/{report}/edit', [Admin\ActivityReportController::class, 'edit'])->name('edit');
+        Route::patch('/{report}',    [Admin\ActivityReportController::class, 'update'])->name('update');
+        Route::delete('/{report}',   [Admin\ActivityReportController::class, 'destroy'])->name('destroy');
+        Route::post('/{report}/publish', [Admin\ActivityReportController::class, 'publish'])->name('publish');
+        Route::delete('/{report}/media/{document}', [Admin\ActivityReportController::class, 'destroyMedia'])->name('media.destroy');
     });
 
 /*

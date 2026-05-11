@@ -131,6 +131,11 @@ class Program extends Model
         return $this->hasMany(Task::class);
     }
 
+    public function activityReports(): HasMany
+    {
+        return $this->hasMany(ActivityReport::class)->orderByDesc('activity_date');
+    }
+
     public function documents(): MorphMany
     {
         return $this->morphMany(Document::class, 'documentable');

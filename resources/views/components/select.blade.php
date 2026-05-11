@@ -1,4 +1,8 @@
 @props(['name', 'label' => null, 'options' => [], 'selected' => null, 'placeholder' => null, 'required' => false])
+@php
+    $oldKey = preg_replace('/\[(.+?)\]/', '.$1', $name);
+    $current = old($oldKey, $selected);
+@endphp
 <div>
     @if($label)
         <label for="{{ $name }}" class="form-label">{{ $label }} @if($required)<span class="text-red-500">*</span>@endif</label>
@@ -6,8 +10,8 @@
     <select id="{{ $name }}" name="{{ $name }}" {{ $required ? 'required' : '' }} {{ $attributes->merge(['class' => 'form-input']) }}>
         @if($placeholder)<option value="">{{ $placeholder }}</option>@endif
         @foreach($options as $value => $label)
-            <option value="{{ $value }}" @selected(old($name, $selected) == $value)>{{ $label }}</option>
+            <option value="{{ $value }}" @selected((string) $current === (string) $value)>{{ $label }}</option>
         @endforeach
     </select>
-    @error($name)<p class="form-error">{{ $message }}</p>@enderror
+    @error($oldKey)<p class="form-error">{{ $message }}</p>@enderror
 </div>

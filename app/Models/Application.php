@@ -128,10 +128,29 @@ class Application extends Model
         return $this->status === ApplicationStatus::Draft;
     }
 
+    /**
+     * Une candidature est éditable si :
+     *   - elle est en brouillon (toujours), ou
+     *   - elle est soumise / en revue ET le programme accepte
+     *     encore les candidatures (avant la clôture).
+     *
+     * Cela permet à la candidate de corriger / compléter son dossier
+     * tant que la période de candidature n'est pas terminée, même après
+     * une première soumission.
+     */
     public function isEditable(): bool
     {
-        return in_array($this->status, [
-            ApplicationStatus::Draft,
-        ], true);
+        if ($this->status === ApplicationStatus::Draft) {
+            return true;
+        }
+
+        if (in_array($this->status, [
+            ApplicationStatus::Submitted,
+            ApplicationStatus::UnderReview,
+        ], true)) {
+            return $this->program?->isAcceptingApplications() ?? false;
+        }
+
+        return false;
     }
 }

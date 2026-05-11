@@ -21,3 +21,15 @@
         <img src="{{ Storage::url($p->cover_image_path) }}" alt="" class="mt-2 h-24 rounded-lg">
     @endif
 </div>
+
+@unless($p)
+    <x-alert type="info">
+        💡 Après la création, vous pourrez sur la fiche programme :
+        <ul class="list-disc list-inside mt-2 text-sm">
+            <li>Associer des <b>partenaires</b> et leur attribuer un rôle</li>
+            <li>Ajouter des <b>organisateurs et membres du jury</b></li>
+            <li>Personnaliser le <b>formulaire de candidature</b> (Form Builder)</li>
+            <li>Créer des <b>rapports d'activité</b> (textes, photos, vidéos)</li>
+        </ul>
+    </x-alert>
+@endunless

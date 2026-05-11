@@ -45,12 +45,15 @@ class ApplicationField extends Model
      * Construit dynamiquement les règles de validation à partir des
      * paramètres du champ (type + custom rules).
      *
+     * @param  bool  $relaxRequired  Si true, force "nullable" même si is_required.
+     *                               Utilisé pour les champs file/video déjà
+     *                               renseignés (modification sans ré-upload).
      * @return array<int, string>
      */
-    public function buildValidationRules(): array
+    public function buildValidationRules(bool $relaxRequired = false): array
     {
         $rules = [];
-        if ($this->is_required) {
+        if ($this->is_required && ! $relaxRequired) {
             $rules[] = 'required';
         } else {
             $rules[] = 'nullable';
