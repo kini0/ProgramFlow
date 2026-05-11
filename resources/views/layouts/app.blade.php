@@ -22,6 +22,23 @@
                 @if (session('error'))
                     <x-alert type="error" :message="session('error')" />
                 @endif
+                @if (session('info'))
+                    <x-alert type="info" :message="session('info')" />
+                @endif
+
+                {{-- Affichage GLOBAL des erreurs de validation pour ne pas laisser
+                     l'utilisateur dans le flou si l'erreur ne peut pas être liée
+                     à un champ précis (typiquement les uploads et requêtes files). --}}
+                @if ($errors->any())
+                    <x-alert type="error" title="Le formulaire contient des erreurs">
+                        <ul class="list-disc list-inside space-y-1">
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </x-alert>
+                @endif
+
                 @yield('content')
                 {{ $slot ?? '' }}
             </main>

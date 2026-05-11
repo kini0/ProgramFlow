@@ -15,6 +15,7 @@ class DatabaseSeeder extends Seeder
             UsersSeeder::class,
             PartnersSeeder::class,
             ProgramsSeeder::class,
+            ActivityReportsSeeder::class,
         ]);
     }
 }

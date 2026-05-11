@@ -42,13 +42,18 @@ class ApplicationPolicy
 
     public function update(User $user, Application $app): bool
     {
-        return $user->id === $app->user_id
-            && $app->status === ApplicationStatus::Draft;
+        // Le candidat peut éditer son dossier tant que :
+        //   - il est propriétaire de la candidature
+        //   - la candidature est elle-même éditable selon son statut
+        //     (cf. Application::isEditable())
+        return $user->id === $app->user_id && $app->isEditable();
     }
 
     public function delete(User $user, Application $app): bool
     {
-        return $this->update($user, $app);
+        // La suppression n'est permise que sur un brouillon (jamais sur soumis)
+        return $user->id === $app->user_id
+            && $app->status === ApplicationStatus::Draft;
     }
 
     public function decide(User $user, Application $app): bool

@@ -27,10 +27,34 @@ class ApplicationController extends Controller
         ]);
     }
 
-    /** Démarre ou reprend un brouillon pour un programme. */
+    /**
+     * Démarre une nouvelle candidature OU redirige vers la candidature
+     * existante si la candidate a déjà postulé à ce programme.
+     *
+     * Règle métier : 1 candidature par programme et par candidate.
+     */
     public function start(Program $program, Request $request)
     {
-        $application = $this->service->startOrResumeDraft($program, $request->user());
+        try {
+            $application = $this->service->startOrResumeDraft($program, $request->user());
+        } catch (\RuntimeException $e) {
+            return redirect()->route('candidate.dashboard')
+                ->with('error', $e->getMessage());
+        }
+
+        // Si la candidate a déjà postulé : on redirige sans message d'erreur
+        // (ce n'est pas une erreur, juste une reprise).
+        if ($application->wasRecentlyCreated === false) {
+            // Si le programme accepte encore les candidatures → édition possible
+            if ($application->isEditable()) {
+                return redirect()->route('candidate.applications.edit', $application)
+                    ->with('info', 'Vous avez déjà une candidature pour ce programme. Vous pouvez la mettre à jour ici.');
+            }
+            // Sinon, simple consultation
+            return redirect()->route('candidate.applications.show', $application)
+                ->with('info', 'Vous avez déjà candidaté à ce programme.');
+        }
+
         return redirect()->route('candidate.applications.edit', $application);
     }
 
@@ -56,13 +80,26 @@ class ApplicationController extends Controller
 
         $this->service->saveResponses($application, $responses, $files);
 
+        // Soumission demandée explicitement (bouton "Soumettre")
         if ($request->boolean('submit')) {
-            $this->service->submit($application);
+            // Si la candidature est encore en brouillon → première soumission
+            if ($application->isDraft()) {
+                $this->service->submit($application);
+                return redirect()->route('candidate.applications.show', $application)
+                    ->with('success', 'Candidature soumise. Vous recevrez un email de confirmation.');
+            }
+            // Si elle était déjà soumise et qu'on a juste mis à jour les réponses :
+            // pas de re-soumission, on confirme la mise à jour.
             return redirect()->route('candidate.applications.show', $application)
-                ->with('success', 'Candidature soumise. Vous recevrez un email de confirmation.');
+                ->with('success', 'Mise à jour de votre candidature enregistrée.');
         }
 
-        return back()->with('success', 'Brouillon enregistré.');
+        // Sauvegarde sans soumission
+        $message = $application->isDraft()
+            ? 'Brouillon enregistré.'
+            : 'Mise à jour enregistrée. Vous pouvez modifier votre dossier tant que les candidatures sont ouvertes.';
+
+        return back()->with('success', $message);
     }
 
     public function show(Application $application)

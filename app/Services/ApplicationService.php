@@ -22,15 +22,30 @@ class ApplicationService
     {
     }
 
+    /**
+     * Démarre une nouvelle candidature OU reprend une candidature existante
+     * pour le couple (programme, utilisateur).
+     *
+     * Règle métier : un candidat ne peut avoir qu'UNE SEULE candidature par
+     * programme (contrainte unique en base). Si une candidature existe déjà
+     * (quel que soit son statut), elle est retournée plutôt que d'en créer
+     * une nouvelle qui violerait la contrainte.
+     */
     public function startOrResumeDraft(Program $program, User $user): Application
     {
-        if (! $program->isAcceptingApplications()) {
-            throw new RuntimeException('Les candidatures pour ce programme ne sont pas ouvertes.');
-        }
+        // Si une candidature existe déjà pour ce couple, on la retourne
+        // telle quelle. Pas de création d'un doublon.
+        $existing = Application::where('program_id', $program->id)
+            ->where('user_id', $user->id)
+            ->first();
 
-        $existing = $this->applications->findDraftFor($program, $user);
         if ($existing) {
             return $existing;
+        }
+
+        // Création uniquement si le programme accepte encore les candidatures.
+        if (! $program->isAcceptingApplications()) {
+            throw new RuntimeException('Les candidatures pour ce programme ne sont pas ouvertes.');
         }
 
         return $this->applications->create([

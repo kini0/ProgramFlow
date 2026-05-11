@@ -45,6 +45,13 @@ class ApplicationController extends Controller
         return view('organizer.applications.show', compact('program', 'application'));
     }
 
+    /**
+     * Override admin : attribution explicite d'un jury à UNE candidature
+     * précise. Normalement inutile car les jurys du programme évaluent
+     * automatiquement toutes les candidatures soumises (cf.
+     * EvaluationService::ensureEvaluationsForJury). Conservé pour cas
+     * exceptionnels (ex: jury supplémentaire ponctuel).
+     */
     public function assignJury(Request $request, Program $program, Application $application)
     {
         $this->authorize('decide', $application);
@@ -61,6 +68,38 @@ class ApplicationController extends Controller
         }
 
         return back()->with('success', 'Jury attribués avec succès.');
+    }
+
+    /**
+     * Clôture explicitement la phase de candidatures et démarre l'évaluation.
+     *
+     * - Bascule le programme du statut "open" vers "review"
+     * - Crée automatiquement les évaluations manquantes pour tous les jurys
+     * - Permet ainsi aux jurys de voir immédiatement les candidatures
+     */
+    public function startEvaluation(Program $program)
+    {
+        $this->authorize('update', $program);
+
+        $created = $this->evaluationService->ensureEvaluationsForProgram($program);
+
+        // Si le programme est encore "open", on le bascule en revue
+        if ($program->status === \App\Enums\ProgramStatus::Open
+            || $program->status === \App\Enums\ProgramStatus::Published) {
+            $program->update([
+                'status'                => \App\Enums\ProgramStatus::Review->value,
+                'application_closes_at' => $program->application_closes_at
+                    && $program->application_closes_at->isFuture()
+                    ? now()->toDateString()
+                    : $program->application_closes_at,
+            ]);
+        }
+
+        return back()->with('success', sprintf(
+            'Phase d\'évaluation démarrée. %d évaluation(s) créée(s) automatiquement pour les %d jury(s) du programme.',
+            $created,
+            $program->juries->count(),
+        ));
     }
 
     public function decide(Request $request, Program $program, Application $application)

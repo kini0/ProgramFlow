@@ -1,9 +1,14 @@
 @extends('layouts.app')
 @section('title', 'Sessions')
 @section('content')
-    <div class="flex items-center justify-between mb-6">
+    <div class="flex items-center justify-between mb-2">
         <h1 class="text-2xl font-bold">Sessions du programme : {{ $program->title }}</h1>
         <a href="{{ route('organizer.programs.sessions.create', $program) }}" class="btn-primary">+ Planifier une session</a>
+    </div>
+    <div class="flex flex-wrap gap-2 mb-6">
+        <a href="{{ route('organizer.programs.applications.index', $program) }}" class="btn-secondary text-sm">📥 Candidatures</a>
+        <a href="{{ route('organizer.programs.selection.show', $program) }}" class="btn-secondary text-sm">🏆 Sélection</a>
+        <a href="{{ route('admin.programs.activityReports.index', $program) }}" class="btn-secondary text-sm">📰 Rapports d'activité</a>
     </div>
     <div class="space-y-3">
         @forelse($program->sessions as $s)

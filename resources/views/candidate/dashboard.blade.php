@@ -18,11 +18,18 @@
                     <div class="mt-2"><x-status-badge :label="$app->status->label()" :color="$app->status->color()" /></div>
                     <div class="mt-4 flex gap-2">
                         @if($app->isEditable())
-                            <a href="{{ route('candidate.applications.edit', $app) }}" class="btn-primary text-sm">Continuer</a>
+                            @php
+                                $label = $app->isDraft() ? 'Continuer' : 'Modifier';
+                            @endphp
+                            <a href="{{ route('candidate.applications.edit', $app) }}" class="btn-primary text-sm">{{ $label }}</a>
+                            <a href="{{ route('candidate.applications.show', $app) }}" class="btn-ghost text-sm">Voir</a>
                         @else
                             <a href="{{ route('candidate.applications.show', $app) }}" class="btn-secondary text-sm">Détails</a>
                         @endif
                     </div>
+                    @if(! $app->isDraft() && $app->program?->isAcceptingApplications())
+                        <p class="mt-2 text-xs text-amber-600">✏️ Vous pouvez encore modifier votre dossier jusqu'au {{ $app->program->application_closes_at?->format('d/m/Y') ?? 'la clôture' }}.</p>
+                    @endif
                 </div>
             @endforeach
         </div>

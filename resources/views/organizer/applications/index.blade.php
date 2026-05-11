@@ -11,12 +11,46 @@
         <x-stat-card label="Acceptées" :value="$stats['accepted']" tone="emerald" />
     </div>
 
+    <div class="flex flex-wrap gap-2 mb-4">
+        <a href="{{ route('organizer.programs.applications.index', $program) }}" class="btn-secondary text-sm">📥 Candidatures</a>
+        <a href="{{ route('organizer.programs.selection.show', $program) }}" class="btn-secondary text-sm">🏆 Sélection</a>
+        <a href="{{ route('organizer.programs.sessions.index', $program) }}" class="btn-secondary text-sm">📅 Sessions</a>
+        <a href="{{ route('admin.programs.activityReports.index', $program) }}" class="btn-secondary text-sm">📰 Rapports d'activité</a>
+    </div>
+
+    @if(in_array($program->status->value, ['open', 'published']) && $stats['submitted'] > 0)
+        @php $closesAt = $program->application_closes_at; @endphp
+        <div class="card card-body mb-6 bg-amber-50 border-amber-200 flex items-center justify-between">
+            <div>
+                <p class="font-semibold text-amber-800">🔒 Clôturer les candidatures et démarrer l'évaluation</p>
+                <p class="text-sm text-amber-700 mt-1">
+                    @if($closesAt && $closesAt->isFuture())
+                        Date prévue de clôture : <b>{{ $closesAt->format('d/m/Y') }}</b>.
+                    @else
+                        La période de candidature est passée. Lancez l'évaluation pour activer les jurys.
+                    @endif
+                    @if($program->juries->isEmpty())
+                        <span class="text-red-600 font-semibold">⚠️ Aucun jury associé — l'évaluation sera impossible.</span>
+                    @else
+                        Les <b>{{ $program->juries->count() }} jury(s)</b> du programme évalueront automatiquement les {{ $stats['submitted'] }} candidature(s) soumise(s).
+                    @endif
+                </p>
+            </div>
+            @if($program->juries->isNotEmpty())
+                <form method="POST" action="{{ route('organizer.programs.startEvaluation', $program) }}"
+                      onsubmit="return confirm('Clôturer les candidatures et démarrer l\'évaluation ?');">
+                    @csrf
+                    <button class="btn-primary">Démarrer l'évaluation</button>
+                </form>
+            @endif
+        </div>
+    @endif
+
     <form method="GET" class="card card-body grid md:grid-cols-3 gap-3 mb-6">
         <x-input name="search" label="Rechercher" :value="request('search')" />
         <x-select name="status" label="Statut" :options="collect($statuses)->mapWithKeys(fn($s)=>[$s->value=>$s->label()])->all()" :selected="request('status')" placeholder="Tous" />
         <div class="flex items-end gap-2">
             <button class="btn-secondary">Filtrer</button>
-            <a href="{{ route('organizer.programs.selection.show', $program) }}" class="btn-primary">Sélection</a>
         </div>
     </form>
 
