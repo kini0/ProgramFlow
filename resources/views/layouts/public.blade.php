@@ -17,6 +17,7 @@
                 ProgramFlow
             </a>
             <div class="flex items-center gap-3">
+                <a href="{{ route('help.index') }}" class="text-sm text-slate-600 hover:text-brand-700">Aide</a>
                 @auth
                     <a href="{{ route('dashboard') }}" class="btn-secondary">Mon espace</a>
                 @else
