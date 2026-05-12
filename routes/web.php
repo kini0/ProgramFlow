@@ -59,23 +59,26 @@ Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
 |--------------------------------------------------------------------------
 | Vérification d'email
 |--------------------------------------------------------------------------
-| Trio de routes attendues par les notifications d'Illuminate :
-|   - verification.notice : page invitant l'utilisateur à vérifier son email
-|   - verification.verify : endpoint signé qui valide l'email
-|   - verification.send   : ré-envoi du lien
+| Note de sécurité : ces routes sont PUBLIQUES (sans middleware auth) pour
+| permettre à une candidate non-connectée de vérifier son email après
+| inscription. La sécurité est assurée par :
+|   - verification.verify  : middleware "signed" (URL signée HMAC)
+|   - verification.send    : throttle, et message générique ne révélant pas
+|                            l'existence d'un compte
 */
-Route::middleware('auth')->group(function () {
-    Route::get('/email/verify', EmailVerificationPromptController::class)
-        ->name('verification.notice');
+Route::get('/email/verify/{id}/{hash}', VerifyEmailController::class)
+    ->middleware(['signed', 'throttle:6,1'])
+    ->name('verification.verify');
 
-    Route::get('/email/verify/{id}/{hash}', VerifyEmailController::class)
-        ->middleware(['signed', 'throttle:6,1'])
-        ->name('verification.verify');
+Route::post('/email/verification-notification', [EmailVerificationNotificationController::class, 'store'])
+    ->middleware('throttle:6,1')
+    ->name('verification.send');
 
-    Route::post('/email/verification-notification', [EmailVerificationNotificationController::class, 'store'])
-        ->middleware('throttle:6,1')
-        ->name('verification.send');
-});
+// Page d'attente "vérifiez votre email" (utilisée par les utilisateurs déjà
+// authentifiés qui n'ont pas vérifié, p. ex. anciens comptes pré-migration).
+Route::get('/email/verify', EmailVerificationPromptController::class)
+    ->middleware('auth')
+    ->name('verification.notice');
 
 /*
 |--------------------------------------------------------------------------

@@ -37,6 +37,21 @@ class LoginRequest extends FormRequest
             ]);
         }
 
+        // Politique de sécurité : un email non vérifié ne peut pas se connecter.
+        // On déconnecte immédiatement l'utilisateur et on l'invite à vérifier
+        // sa boîte mail (ou à renvoyer le lien).
+        $user = Auth::user();
+        if ($user
+            && $user instanceof \Illuminate\Contracts\Auth\MustVerifyEmail
+            && ! $user->hasVerifiedEmail()) {
+            Auth::logout();
+            session()->put('verification_email', $user->email);
+            throw ValidationException::withMessages([
+                'email' => 'Vous devez vérifier votre adresse email avant de vous connecter. '
+                    . 'Consultez votre boîte mail ou demandez un nouveau lien ci-dessous.',
+            ]);
+        }
+
         RateLimiter::clear($this->throttleKey());
     }
 
