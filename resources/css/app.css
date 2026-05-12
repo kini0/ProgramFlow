@@ -32,4 +32,37 @@
     .table-app th       { @apply px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider; }
     .table-app td       { @apply px-6 py-4 whitespace-nowrap text-sm text-slate-700; }
     .table-app tbody tr { @apply hover:bg-slate-50; }
+
+    /* ============================================================
+       Styles du centre d'aide (/aide)
+       ============================================================ */
+    .prose-help h1 { @apply text-3xl font-bold text-slate-800 mb-4 mt-0; }
+    .prose-help h2 { @apply text-2xl font-bold text-slate-800 mt-12 mb-4 flex items-center gap-3; }
+    .prose-help h3 { @apply text-lg font-semibold text-slate-700 mt-8 mb-3; }
+    .prose-help p  { @apply text-slate-700 leading-relaxed mb-3; }
+    .prose-help ul:not(.list-none) { @apply list-disc list-inside text-slate-700 space-y-1 mb-4 pl-2; }
+    .prose-help ol { @apply list-decimal list-inside text-slate-700 space-y-2 mb-4 pl-2; }
+    .prose-help ol > li, .prose-help ul > li { @apply pl-2 leading-relaxed; }
+    .prose-help strong { @apply font-semibold text-slate-900; }
+    .prose-help code   { @apply bg-slate-100 text-brand-700 px-1.5 py-0.5 rounded text-sm font-mono; }
+    .prose-help pre    { @apply my-4; }
+    .prose-help pre code { @apply bg-transparent text-inherit px-0 py-0; }
+    .prose-help a:not(.btn-primary):not(.btn-secondary):not(.btn-ghost) {
+        @apply text-brand-600 hover:underline;
+    }
+    .prose-help summary { @apply outline-none; }
+    .prose-help details[open] summary { @apply text-brand-700; }
+    .prose-help table { @apply w-full text-sm; }
+    .prose-help table th { @apply text-left px-3 py-2 bg-slate-50 font-semibold; }
+    .prose-help table td { @apply px-3 py-2 border-t border-slate-100; }
+
+    .step-card { @apply border border-slate-200 rounded-lg p-4 bg-white my-3; }
+    .step-card .num { @apply inline-flex items-center justify-center w-8 h-8 bg-brand-600 text-white rounded-full font-bold mb-2 text-sm; }
+
+    .callout { @apply border-l-4 p-4 my-4 rounded-r-lg; }
+    .callout p { @apply !mb-0; }
+    .callout.info    { @apply bg-blue-50 border-blue-400 text-blue-900; }
+    .callout.warning { @apply bg-amber-50 border-amber-400 text-amber-900; }
+    .callout.success { @apply bg-emerald-50 border-emerald-400 text-emerald-900; }
+    .callout.danger  { @apply bg-red-50 border-red-400 text-red-900; }
 }

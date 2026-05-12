@@ -28,6 +28,14 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/programmes/{slug}', [HomeController::class, 'show'])->name('public.program');
 
+// Documentation utilisateur publique
+Route::prefix('aide')->name('help.')->group(function () {
+    Route::get('/',              [\App\Http\Controllers\HelpController::class, 'index'])->name('index');
+    Route::get('/role/{role}',   [\App\Http\Controllers\HelpController::class, 'role'])->name('role');
+    Route::get('/faq',           [\App\Http\Controllers\HelpController::class, 'faq'])->name('faq');
+    Route::get('/glossaire',     [\App\Http\Controllers\HelpController::class, 'glossary'])->name('glossary');
+});
+
 /*
 |--------------------------------------------------------------------------
 | Routes d'authentification

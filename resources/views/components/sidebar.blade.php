@@ -48,7 +48,11 @@
             </a>
         @endforeach
     </nav>
-    <div class="px-4 py-4 border-t border-slate-100 text-xs text-slate-400">
-        v1.0 — {{ config('programflow.foundation_name') }}
+    <div class="px-4 py-4 border-t border-slate-100">
+        <a href="{{ route('help.index') }}" target="_blank"
+           class="flex items-center gap-2 px-3 py-2 text-sm text-slate-600 hover:bg-slate-100 rounded-lg">
+            <x-icon name="question" /> Centre d'aide
+        </a>
+        <p class="text-xs text-slate-400 mt-3 px-3">v1.0 — {{ config('programflow.foundation_name') }}</p>
     </div>
 </aside>
